@@ -1,4 +1,4 @@
-This document for OCR
+:sparkles: This document for OCR :sparkles:
 
 ![PAN Card to JSON](PANOcr.jpg?raw=true "PAN Card image")
 
