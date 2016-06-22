@@ -61,5 +61,7 @@ Structure and Usage
 			
 	Usage:
 		python file_name.py [input image]
-		Output will be JSON object name			 :point_left:
+		Output will be JSON object name			 
+	
+	:point_left:
 *****************************************************
