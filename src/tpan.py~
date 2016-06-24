@@ -31,7 +31,7 @@ img.save('temp.jpg')
 
 text = pytesseract.image_to_string(Image.open('temp.jpg'))
 text = filter(lambda x: ord(x)<128,text)
-
+print text
 # Initializing data variable
 name = None
 fname = None
@@ -70,7 +70,7 @@ with open('dummy.csv', 'rb') as f:
 	reader = csv.reader(f)
 	newlist = list(reader)    
 [item for newlist in newlist for item in newlist]
-print newlist
+
 # Searching for Name and finding closest name in database
 try:
 	for x in text0:
