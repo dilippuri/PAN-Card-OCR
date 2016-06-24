@@ -9,11 +9,8 @@ import re
 import difflib
 import csv
 import dateutil.parser as dparser
-try:
-	from PIL import Image, ImageEnhance, ImageFilter
-except:
-	print "please install PIL"
-	sys.exit()
+from PIL import Image, ImageEnhance, ImageFilter
+
 path = sys.argv[1]
 
 img = Image.open(path)
@@ -45,7 +42,6 @@ text1 = []
 text2 = []
 
 
-# Searching for PAN
 lines = text.split('\n')
 for lin in lines:
 	s = lin.strip()
@@ -55,35 +51,99 @@ for lin in lines:
 
 text1 = filter(None, text1)	
 #print(text1)
-lineno=0
 
-for wordline in text1:
-	xx = wordline.split( )
-	if ([w for w in xx if re.search('(GOVERNMENT|OVERNMENT|VERNMENT|DEPARTMENT|EPARTMENT|PARTMENT|ARTMENT|INDIA|NDIA)$', w)]):
-		lineno = text1.index(wordline)
-		break
+def findword(textlist, wordstring):
+	try:
+		lineno = -1
+		for wordline in textlist:
+			xx = wordline.split( )
+			if ([w for w in xx if re.search(wordstring, w)]):
+				lineno = textlist.index(wordline)
+				textlist = textlist[lineno+1:]
+				return textlist
+			else:
+				textlist = textlist[lineno+1:]
+				return textlist
+	except:
+		pass
 
-text0 = text1[lineno+1:]
-#print(text0)
-
-with open('dummy.csv', 'rb') as f:
+#-----------Read Database
+with open('namedb.csv', 'rb') as f:
 	reader = csv.reader(f)
 	newlist = list(reader)    
-[item for newlist in newlist for item in newlist]
+newlist = sum(newlist, [])
 
-# Searching for Name and finding closest name in database
+
+def findname(textlist):
+	lineno = -1
+	try:
+		for x in textlist:
+			for y in x.split( ):
+				if(difflib.get_close_matches(y.upper(), newlist)):
+					lineno = text0.index(x)
+					return lineno
+				else:
+					return lineno
+	except:
+		pass
+
+# Searching for PAN
+text0 = findword(text1, '(Number|umber|Account|ccount|count|Permanent|ermanent|manent)$')
+#print text0
+	
+panline = text0[0]
+pan = panline.replace(" ", "")	
+		
+
 try:
-	for x in text0:
-		for y in x.split( ):
-			if(difflib.get_close_matches(y.upper(), newlist)):
-				nameline.append(x)
-				break
+	text0 = findword(text0, '(Name)$')
+	print text0
+	x = findname(text0)
+	print x
+	nameline1 = text0[x]
+	text0 = text0[x+1:]
+	text0 = findword(text0, '(Fathers Name|Father|Fathers|Father Name)$')
+	x = findname(text0)
+	nameline2 = text0[x]
+	print nameline1
+	print nameline2
 except:
 	pass
 
+
+# Searching for Name and finding closest name in database
+text0 = text0[namefine1()+1:]
+print text0
+
 try:
-	name = nameline[0]
-	fname = nameline[1]
+	for wordline in text0:
+		xx = wordline.split( )
+		if ([w for w in xx if re.search('(Fathers Name|Father|Fathers|Father Name)$', w)]):
+			lineno = text0.index(wordline)
+			break
+	text0 = text0[lineno+1:]
+except:
+	pass
+def namefine2():
+	lineno = -1
+	try:
+		for x in text0:
+			for y in x.split( ):
+				if(difflib.get_close_matches(y.upper(), newlist)):
+					nameline2 = x
+					lineno = text0.index(x)
+					return lineno
+	except:
+		pass
+
+namefine2()
+text0 = text0[namefine1()+1:]
+
+try:
+	name = nameline1
+	print name
+	fname = nameline2
+	print fname
 except:
 	pass
 	
@@ -96,18 +156,7 @@ try:
 		for y in z:
 			if(dparser.parse(y, fuzzy=True)):
 				dob = dparser.parse(y,fuzzy=True).year
-				panline = dobline[dobline.index(x)+1:]
 				break
-except:
-	pass
-	
-try:
-	for wordline in panline:
-		xx = wordline.split( )
-		if ([w for w in xx if re.search('(Number|umber|Account|ccount|count|Permanent|ermanent|manent)$', w)]):
-			pan = panline[panline.index(wordline)+1]
-			break
-	pan = pan.replace(" ", "")
 except:
 	pass
 
