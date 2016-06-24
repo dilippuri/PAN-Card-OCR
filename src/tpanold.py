@@ -61,6 +61,7 @@ def findword(textlist, wordstring):
 			textlist = textlist[lineno+1:]
 			return textlist
 	return textlist
+
 #-----------Read Database
 with open('namedb.csv', 'rb') as f:
 	reader = csv.reader(f)
@@ -77,8 +78,7 @@ def findname(textlist):
 				if(difflib.get_close_matches(y.upper(), newlist)):
 					lineno = textlist.index(x)
 					return lineno
-				else:
-					return lineno
+		return lineno
 	except:
 		pass
 
@@ -88,20 +88,15 @@ panline = text0[0]
 pan = panline.replace(" ", "")	
 
 # Searching for NAME
-#print text0
 try:
 	word1 = '(/NAME|/Name|NAME|Name)$'
 	text0 = findword(text0, word1)
-#	nameline1 = text0[0]
-#	text0 = text0[x+1:]
-#	word2 = ['/FATHERS NAME','/FATHER S NAME','/FATHER NAME','/FATHER','/Fathers Name','/Father','/Fathers','/Father Name','FATHERS NAME','FATHER S NAME','FATHER NAME','FATHER','Fathers Name','Father','Fathers','Father Name']
-#	text0 = findwords(text0, word2)
-#	x = findwords(text0,word2)
-#	print x
-#	nameline2 = text0[x]
-#	text0 = text0[x+1:]
-#	print nameline1
-#	print nameline2
+	nameline1 = text0[0]
+	text0 = text0[1:]
+	word2 = '(/FATHERS| NAME|/FATHERS NAME|/FATHER S NAME|/FATHER NAME|/FATHER|/Fathers Name|/Father|/Fathers|/Father Name|FATHERS NAME|FATHER S NAME|FATHER NAME|FATHER|Fathers Name|Father|Fathers|Father Name)$'
+	text0 = findword(text0, word2)
+	nameline2 = text0[0]
+	text0 = text0[1:]
 except:
 	pass
 
@@ -109,22 +104,18 @@ except:
 # Searching for Name and finding closest name in database
 try:
 	name = nameline1
-	print name
 	fname = nameline2
-	print fname
 except:
 	pass
-	
+
 try:
-	dobline = [item for item in text0 if item not in nameline]
+	word3 = '(/DATE|BIRTH|/DATE OF BIRTH|DATE|DATE OF BIRTH|Date)$'
+	text0 = findword(text0, word3)
+	dobline = text0[0]
+	text0 = text0[1:]
 #	print dobline
-	for x in dobline:
-		z = x.split()
-		z = [s for s in z if len(s) > 3]
-		for y in z:
-			if(dparser.parse(y, fuzzy=True)):
-				dob = dparser.parse(y,fuzzy=True).year
-				break
+	if(dparser.parse(dobline, fuzzy=True)):
+		dob = dparser.parse(dobline,fuzzy=True).year
 except:
 	pass
 
