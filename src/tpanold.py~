@@ -51,23 +51,17 @@ for lin in lines:
 
 text1 = filter(None, text1)	
 #print(text1)
-
+#print "++++++++++++++++++++++++++++++++++++"
 def findword(textlist, wordstring):
-	try:
-		lineno = -1
-		for wordline in textlist:
-			xx = wordline.split( )
-			if ([w for w in xx if re.search(wordstring, w)]):
-				lineno = textlist.index(wordline)
-				textlist = textlist[lineno+1:]
-				return textlist
-			else:
-				textlist = textlist[lineno+1:]
-				return textlist
-	except:
-		pass
-
-
+	lineno = -1
+	for wordline in textlist:
+		xx = wordline.split( )
+		if ([w for w in xx if re.search(wordstring, w)]):
+			lineno = textlist.index(wordline)
+			textlist = textlist[lineno+1:]
+			return textlist
+	return textlist
+#-----------Read Database
 with open('namedb.csv', 'rb') as f:
 	reader = csv.reader(f)
 	newlist = list(reader)    
@@ -79,8 +73,9 @@ def findname(textlist):
 	try:
 		for x in textlist:
 			for y in x.split( ):
+				print y
 				if(difflib.get_close_matches(y.upper(), newlist)):
-					lineno = text0.index(x)
+					lineno = textlist.index(x)
 					return lineno
 				else:
 					return lineno
@@ -89,56 +84,29 @@ def findname(textlist):
 
 # Searching for PAN
 text0 = findword(text1, '(Number|umber|Account|ccount|count|Permanent|ermanent|manent)$')
-#print text0
-	
 panline = text0[0]
 pan = panline.replace(" ", "")	
-		
 
+# Searching for NAME
+#print text0
 try:
-	text0 = findword(text0, '(Name)$')
-	print text0
-	x = findname(text0)
-	print x
-	nameline1 = text0[x]
-	text0 = text0[x+1:]
-	text0 = findword(text0, '(Fathers Name|Father|Fathers|Father Name)$')
-	x = findname(text0)
-	nameline2 = text0[x]
-	print nameline1
-	print nameline2
+	word1 = '(/NAME|/Name|NAME|Name)$'
+	text0 = findword(text0, word1)
+#	nameline1 = text0[0]
+#	text0 = text0[x+1:]
+#	word2 = ['/FATHERS NAME','/FATHER S NAME','/FATHER NAME','/FATHER','/Fathers Name','/Father','/Fathers','/Father Name','FATHERS NAME','FATHER S NAME','FATHER NAME','FATHER','Fathers Name','Father','Fathers','Father Name']
+#	text0 = findwords(text0, word2)
+#	x = findwords(text0,word2)
+#	print x
+#	nameline2 = text0[x]
+#	text0 = text0[x+1:]
+#	print nameline1
+#	print nameline2
 except:
 	pass
 
 
 # Searching for Name and finding closest name in database
-text0 = text0[namefine1()+1:]
-print text0
-
-try:
-	for wordline in text0:
-		xx = wordline.split( )
-		if ([w for w in xx if re.search('(Fathers Name|Father|Fathers|Father Name)$', w)]):
-			lineno = text0.index(wordline)
-			break
-	text0 = text0[lineno+1:]
-except:
-	pass
-def namefine2():
-	lineno = -1
-	try:
-		for x in text0:
-			for y in x.split( ):
-				if(difflib.get_close_matches(y.upper(), newlist)):
-					nameline2 = x
-					lineno = text0.index(x)
-					return lineno
-	except:
-		pass
-
-namefine2()
-text0 = text0[namefine1()+1:]
-
 try:
 	name = nameline1
 	print name
