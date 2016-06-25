@@ -66,10 +66,11 @@ for wordline in text1:
 text0 = text1[lineno+1:]
 #print(text0)
 
-with open('dummy.csv', 'rb') as f:
+#-----------Read Database
+with open('namedb.csv', 'rb') as f:
 	reader = csv.reader(f)
 	newlist = list(reader)    
-[item for newlist in newlist for item in newlist]
+newlist = sum(newlist, [])
 
 # Searching for Name and finding closest name in database
 try:
