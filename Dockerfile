@@ -1,9 +1,6 @@
-docker run -i -t continuumio/anaconda /bin/bash
-
-conda install opencv
-
-pip install pytesseract
-
-apt-get install tesseract-ocr
-
-git clone git@github.com:shantanuo/PAN-Card-OCR.git
+from continuumio/anaconda
+RUN conda install opencv
+RUN pip install pytesseract
+RUN apt-get -y install tesseract-ocr
+RUN apt-get -y install git
+ADD * /
