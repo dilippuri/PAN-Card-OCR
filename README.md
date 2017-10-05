@@ -7,7 +7,7 @@ Problem:
 *****************************************************
 	Extract information from image of Personal Account Number(PAN) Card
 	by OCR in proper format[Standard according Indian Govt.].
-		Imformation like - 
+		Information like - 
 					Name, Father's Name, Date of Birth, PAN
 *****************************************************
 
