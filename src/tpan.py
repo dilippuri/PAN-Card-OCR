@@ -10,11 +10,12 @@ import csv
 import dateutil.parser as dparser
 try:
     from PIL import Image
-except Exception as ex:
-    print "please install PIL"
+except:
+    print "please install PIL package"
     sys.exit()
 path = sys.argv[1]
 
+# reading file from console
 img = Image.open(path)
 img = img.convert('RGBA')
 pix = img.load()
@@ -28,6 +29,7 @@ for y in range(img.size[1]):
 
 img.save('temp.jpg')
 
+# extracting text from image using tesseract
 text = pytesseract.image_to_string(Image.open('temp.jpg'))
 text = filter(lambda x: ord(x) < 128, text)
 
