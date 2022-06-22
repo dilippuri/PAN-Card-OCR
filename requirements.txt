@@ -1,6 +1,6 @@
 opencv_python==4.2.0.32
 scipy==0.19.1
-numpy==1.21.0
+numpy==1.22.0
 Pillow==9.0.0
 python_dateutil==2.7.3
 pytesseract==0.2.5
