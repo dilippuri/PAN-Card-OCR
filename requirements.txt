@@ -1,5 +1,5 @@
 opencv_python==4.2.0.32
-scipy==0.19.1
+scipy==1.10.0
 numpy==1.21.0
 Pillow==9.0.0
 python_dateutil==2.7.3
