@@ -8,6 +8,7 @@ import re
 import difflib
 import csv
 import dateutil.parser as dparser
+
 try:
     from PIL import Image
 except:
